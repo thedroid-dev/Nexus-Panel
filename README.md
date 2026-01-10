@@ -20,3 +20,19 @@ NexusPanel es un panel web ficticio diseñado para servidores Minecraft, con un 
 ---
 
 ## 📂 Estructura
+---
+
+## 🚀 Explicación
+- **index.html** → landing page con tu branding.  
+- **styles.css** → tema oscuro, acentos puros, tipografía moderna.  
+- **scripts.js** → lógica básica (ejemplo: abrir/cerrar menús, validaciones).  
+- **assets/** → imágenes y recursos visuales.  
+- **pages/** → subpáginas que simulan un panel real (usuarios, rangos, economía, etc.).  
+- **README.md** → documentación clara y profesional.  
+- **LICENSE** → para darle formalidad al repo.  
+
+---
+
+## 👤 Autor
+**TheDroidOg** – [Nexuscraft.me](https://thedroid-dev.github.io/Pagina/)  
+Discord: `@TheDroidOG`
