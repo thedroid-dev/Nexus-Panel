@@ -1,135 +1,43 @@
-StaffDroid
+# 🧑‍💻 Experiencia Profesional
 
-StaffDroid es un plugin profesional para servidores Paper/Spigot, diseñado para equipos de moderación y administración. Incluye comandos de control, diversión y utilidades, todo configurable desde config.yml.
+Con más de **5 años de experiencia en desarrollo full‑stack y soluciones para servidores Minecraft**, he trabajado en la creación de plugins personalizados, paneles técnicos y flujos de automatización que mejoran la experiencia del jugador y optimizan la gestión de redes.
 
-🚀 Características
+---
 
-Chat privado para el staff
+## 📅 Timeline de Experiencia
 
-Congelar, silenciar, degradar y banear jugadores
+### 2019 – Primeros proyectos en Paper/Spigot
+Desarrollo de plugins básicos para moderación y utilidades, aprendiendo la arquitectura de `plugin.yml` y configuración en YAML.
 
-Comando /troll con efectos visuales y cárcel de bedrock
+### 2020 – Expansión a Node.js y TypeScript
+Creación de bots y paneles web para comunidades, integrando APIs y bases de datos MySQL.
 
-Comando /dupe con control de cantidad y cooldown
+### 2021 – Infraestructura con Docker y Pterodactyl
+Diseño de entornos escalables con contenedores, automatización de despliegues y gestión de servidores con Pterodactyl.
 
-Cambios rápidos de gamemode (/s1, /s2, /s3)
+### 2022 – Branding y documentación profesional
+Publicación de paneles técnicos, guías de instalación y documentación clara para equipos de staff y administradores.
 
-Recarga de configuración con /droid reload
+### 2023 – Redes Minecraft a medida
+Implementación de sistemas de economía, rangos, misiones y eventos, con enfoque en rendimiento y reducción de lag.
 
-📦 Instalación
+### 2024 – CI/CD y optimización avanzada
+Integración de pipelines de despliegue continuo, backups automáticos y monitoreo para garantizar estabilidad y seguridad.
 
-Coloca el archivo StaffDroid.jar en la carpeta plugins/ de tu servidor.
+### 2025 – Consolidación de portafolio Nexuscraft
+Presentación de proyectos como **StaffDroid**, **NexusPanel** y soluciones de infraestructura, mostrando visión técnica y branding consistente.
 
-Reinicia el servidor.
+---
 
-Edita plugins/StaffDroid/config.yml para personalizar mensajes, cooldowns y coordenadas de cárcel.
+## 🚀 Tecnologías Dominadas
+- **Backend:** Java (Paper/Spigot), Node.js, TypeScript  
+- **Infraestructura:** Docker, Pterodactyl, CI/CD  
+- **Bases de datos:** MySQL  
+- **Frontend:** HTML, CSS, diseño visual oscuro y moderno  
+- **Documentación:** Markdown, guías técnicas, onboarding para staff  
 
-📜 Comandos
+---
 
-Comando
-
-Descripción
-
-Permiso
-
-/staffchat
-
-Chat privado entre miembros del staff
-
-staffdroid.staffchat
-
-/freeze
-
-Congela a un jugador
-
-staffdroid.freeze
-
-/unfreeze
-
-Descongela a un jugador
-
-staffdroid.unfreeze
-
-/mute
-
-Silencia a un jugador
-
-staffdroid.mute
-
-/demote
-
-Baja de rango a un jugador
-
-staffdroid.demote
-
-/ban
-
-Banea a un jugador
-
-staffdroid.ban
-
-/banip
-
-Banea la IP de un jugador
-
-staffdroid.banip
-
-/troll
-
-Trollea con rayos o cárcel
-
-staffdroid.troll
-
-/dupe
-
-Duplica el objeto en la mano
-
-staffdroid.dupe
-
-/s1
-
-Modo supervivencia
-
-staffdroid.survival
-
-/s2
-
-Modo creativo
-
-staffdroid.creative
-
-/s3
-
-Modo espectador
-
-staffdroid.spectator
-
-/droid reload
-
-Recarga la configuración del plugin
-
-staffdroid.reload
-
-⚙️ Configuración
-
-config.yml incluye:
-
-Prefijo de mensajes
-
-Cooldown para /dupe
-
-Coordenadas de cárcel
-
-Formato de StaffChat
-
-🧠 Requisitos
-
-Servidor Paper/Spigot 1.19+
-
-Java 17+
-
-👤 Autor
-
-TheDroidOg – Nexuscraft.me
-
-Este proyecto es parte del portafolio técnico de TheDroidOg. Para colaboraciones, pruebas o demos, contáctame por Discord: @TheDroidOG.
+## 👤 Autor
+**TheDroidOg** – [Nexuscraft.me](https://nexuscraft.me)  
+Disponibilidad: **Abierta** | Discord: `@TheDroidOG`
