@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OgDroig - Servicios Minecraft</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        
+        body {
+            background: linear-gradient(180deg, #0A0A0A 0%, #112211 100%);
+            color: #ddd;
+            font-family: 'VT323', monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 1.4;
+        }
+
+        .header {
+            background: linear-gradient(rgba(10,10,10,0.85), rgba(10,10,10,0.85)), 
+                        url('https://images.unsplash.com/photo-1611996575749-79a3ae8e6e9d?ixlib=rb-4.0.3&auto=format&fit=crop&q=80') center/cover;
+            height: 95vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 5.2rem;
+            color: #00ff00;
+            text-shadow: 
+                0 0 20px #00ff00,
+                0 0 40px #00ff00,
+                8px 8px 0 #000,
+                -8px -8px 0 #000;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 2.1rem;
+            color: #ffdd00;
+            text-shadow: 4px 4px 0 #000;
+        }
+
+        .owner {
+            font-size: 1.65rem;
+            color: #00ffff;
+            margin-top: 20px;
+        }
+
+        .mod-badge {
+            display: inline-block;
+            background: #00aa00;
+            color: #fff;
+            padding: 6px 18px;
+            font-size: 1.3rem;
+            border: 3px solid #ffdd00;
+            margin-top: 15px;
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2.6rem;
+            color: #00ff00;
+            text-align: center;
+            margin: 60px 0 40px;
+            text-shadow: 5px 5px 0 #000;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #1a2a1a;
+            border: 6px solid #00aa00;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: #ffdd00;
+            transform: translateY(-12px);
+            box-shadow: 0 0 35px #ffdd00;
+        }
+
+        .service-icon {
+            font-size: 3.8rem;
+            margin-bottom: 18px;
+        }
+
+        .price {
+            font-size: 2.3rem;
+            color: #ffdd00;
+            margin: 12px 0 20px;
+        }
+
+        .btn {
+            background: #00aa00;
+            color: #fff;
+            padding: 16px 38px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.25rem;
+            border: 5px solid #000;
+            cursor: pointer;
+            box-shadow: 6px 6px 0 #000;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #ffdd00;
+            color: #000;
+            box-shadow: 0 0 0 #000;
+        }
+
+        .highlight {
+            background: #0f2a0f;
+            padding: 70px 20px;
+            text-align: center;
+            border-top: 10px solid #ffdd00;
+            border-bottom: 10px solid #ffdd00;
+            margin: 60px 0;
+        }
+
+        footer {
+            background: #0a0a0a;
+            padding: 45px 20px;
+            text-align: center;
+            border-top: 8px solid #00ff00;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            font-size: 1.45rem;
+        }
+
+        ul li {
+            margin: 8px 0;
+        }
+
+        ul li:before {
+            content: "✓ ";
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div>
+            <h1 class="logo">OGDROIG</h1>
+            <p class="subtitle">SERVICIOS PROFESIONALES MINECRAFT</p>
+            <p class="owner">Discord: <strong>theangk</strong></p>
+            <div class="mod-badge">
+                <i class="fas fa-shield-alt"></i> MODERADOR EN AURORAMC
+            </div>
+            <p style="margin-top: 12px; font-size: 1.4rem; color: #aaffaa;">
+                Moderador desde el 6 de abril
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <h2>MIS SERVICIOS</h2>
+        
+        <div class="services-grid">
+
+            <div class="service-card">
+                <div class="service-icon" style="color:#00ff88;">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <h3>APLANAR MONTAÑA</h3>
+                <div class="price">10B</div>
+                <ul>
+                    <li>Aplanado completo de cualquier montaña</li>
+                    <li>Terreno limpio y listo para construir</li>
+                    <li>Limpieza total de bloques</li>
+                    <li>Entrega en menos de 48 horas</li>
+                </ul>
+                <div class="btn" onclick="irADiscord('Aplanar Montaña 10B')">SOLICITAR SERVICIO</div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon" style="color:#00cc44;">
+                    <i class="fas fa-tree"></i>
+                </div>
+                <h3>TALAR BOSQUE</h3>
+                <div class="price">1B</div>
+                <ul>
+                    <li>Tala masiva de árboles</li>
+                    <li>Recolección completa de madera</li>
+                    <li>Limpieza total del terreno</li>
+                    <li>Perfecto para farms grandes</li>
+                </ul>
+                <div class="btn" onclick="irADiscord('Talar Bosque 1B')">SOLICITAR SERVICIO</div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon" style="color:#ff00ff;">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3>KITS PREMIUM</h3>
+                <div class="price">Consulta</div>
+                <ul>
+                    <li>Kit Rockstar</li>
+                    <li>Kit Abisal</li>
+                    <li>Armadura y herramientas full encantadas</li>
+                    <li>Items de alto nivel</li>
+                </ul>
+                <div class="btn" onclick="irADiscord('Kit Rockstar o Kit Abisal')">SOLICITAR KIT</div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon" style="color:#ffcc00;">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h3>LLAVES Y OBJETOS</h3>
+                <div class="price">Desde 500M hasta 90B</div>
+                <ul>
+                    <li>Llaves Corazón</li>
+                    <li>Llaves Épica</li>
+                    <li>Llaves Dinero</li>
+                    <li>Llaves Rankups</li>
+                    <li>Otros objetos y crates</li>
+                </ul>
+                <div class="btn" onclick="irADiscord('Llaves Corazón, Épica, Dinero, Rankups')">COMPRAR LLAVES</div>
+            </div>
+
+        </div>
+
+        <div class="highlight">
+            <h2 style="color:#ffdd00;">TRABAJO SERIO • PRECIOS CLAROS • ENTREGA RÁPIDA</h2>
+            <p style="font-size: 1.9rem; max-width: 820px; margin: 30px auto;">
+                Aplano montañas, talo bosques grandes, vendo kits Rockstar y Abisal, 
+                llaves Corazón, Épica, Dinero, Rankups y más cosas útiles.
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        <h2 style="color:#00ff00; margin-bottom: 15px;">OGDROIG</h2>
+        <p style="font-size: 1.85rem;">Discord personal: <strong>theangk</strong></p>
+        <p style="font-size: 1.6rem; margin-top: 10px;">
+            Servidor AuroraMC: <a href="https://discord.gg/HdTGfmDxn" target="_blank" style="color:#00ff00; text-decoration:underline;">https://discord.gg/HdTGfmDxn</a>
+        </p>
+        <p style="margin-top: 25px; font-size: 1.55rem;">
+            Haz clic en "SOLICITAR SERVICIO" → copia el mensaje y pégalo en mi Discord
+        </p>
+        <p style="margin-top: 35px; opacity: 0.7; font-size: 1.4rem;">
+            Moderador en AuroraMC desde el 6 de abril • Todos los trabajos con cuenta propia
+        </p>
+    </footer>
+
+    <script>
+        function irADiscord(servicio) {
+            const mensaje = `Hola OgDroig, quiero el servicio: ${servicio}\n\nDiscord: theangk`;
+            alert("✅ Copia este mensaje y pégalo directamente en mi Discord (theangk):\n\n" + mensaje);
+            window.open("https://discord.com/channels/@me", "_blank");
+        }
+
+        console.log("OgDroig Services cargado");
+    </script>
+
+</body>
+</html>
