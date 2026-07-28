@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solari Host | Panel del Cliente</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #08080a;
+            --bg-secondary: #121216;
+            --bg-card: rgba(20, 20, 26, 0.85);
+            --border-color: rgba(255, 204, 0, 0.12);
+            --accent-yellow: #ffcc00;
+            --accent-yellow-glow: rgba(255, 204, 0, 0.2);
+            --text-main: #f3f3f6;
+            --text-muted: #9494a0;
+            --font-sans: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-primary); color: var(--text-main); font-family: var(--font-sans); display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; }
+        .sidebar-logo { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 800; color: var(--text-main); text-decoration: none; margin-bottom: 40px; }
+        .sidebar-logo i { color: var(--accent-yellow); }
+        .sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--text-muted); text-decoration: none; border-radius: 10px; font-weight: 500; transition: 0.3s; }
+        .sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(255, 204, 0, 0.1); color: var(--accent-yellow); }
+
+        /* Main Content */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .user-badge { display: flex; align-items: center; gap: 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; }
+        .user-badge i { color: var(--accent-yellow); }
+
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; }
+        .stat-card h4 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px; }
+        .stat-card .value { font-size: 1.8rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent-yellow); }
+
+        /* Server Cards & Console */
+        .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--accent-yellow); color: #000; box-shadow: 0 4px 15px var(--accent-yellow-glow); }
+        .btn-danger { background: rgba(255, 42, 77, 0.15); color: #ff2a4d; border: 1px solid #ff2a4d; }
+
+        .server-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 30px; margin-bottom: 20px; }
+        .server-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .server-status { background: rgba(39, 201, 63, 0.1); border: 1px solid #27c93f; color: #27c93f; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        
+        .console-box { background: #000; border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; font-family: var(--font-mono); font-size: 0.85rem; height: 180px; overflow-y: auto; color: #27c93f; margin-bottom: 20px; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div>
+            <a href="index.html" class="sidebar-logo">
+                <i class="fa-solid fa-cube"></i>
+                <span>Solari Panel</span>
+            </a>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html" class="active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
+                <li><a href="panel.html"><i class="fa-solid fa-server"></i> Crear & Nodos</a></li>
+                <li><a href="index.html"><i class="fa-solid fa-globe"></i> Ir al Sitio Web</a></li>
+            </ul>
+        </div>
+        <div>
+            <button onclick="logout()" class="btn btn-danger" style="width: 100%; justify-content: center;"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <h2>Panel de Control Principal</h2>
+            <div class="user-badge">
+                <i class="fa-solid fa-user-shield"></i>
+                <span id="displayUsername">Cargando...</span>
+            </div>
+        </div>
+
+        <!-- Estadísticas Rápidas -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <h4>Servidores Activos</h4>
+                <div class="value" id="statServers">1</div>
+            </div>
+            <div class="stat-card">
+                <h4>Memoria RAM Asignada</h4>
+                <div class="value" id="statRam">8 GB</div>
+            </div>
+            <div class="stat-card">
+                <h4>Estado de Nodos</h4>
+                <div class="value" style="color: #27c93f;">100% Online</div>
+            </div>
+        </div>
+
+        <!-- Mis Servidores -->
+        <div class="section-title">
+            <span>Mis Servidores Minecraft / VPS</span>
+            <a href="panel.html" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Desplegar Nuevo Servidor</a>
+        </div>
+
+        <div class="server-card">
+            <div class="server-header">
+                <div>
+                    <h3 id="serverName">NebulaCore Survival Pro</h3>
+                    <p style="color: var(--text-muted); font-size: 0.85rem;">IP: <strong style="color: var(--accent-yellow);">node01.solarihost.xyz:25565</strong></p>
+                </div>
+                <div class="server-status">ONLINE (TPS: 20.0)</div>
+            </div>
+
+            <div class="console-box" id="consoleOutput">
+                [Solari Core] Loading server properties...<br>
+                [Solari Core] Initializing PaperMC 1.20.4 optimized by 71x7.<br>
+                [Server] Done (3.421s)! For help, type "help"<br>
+                [Player] 71x7 joined the game.
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="restartServer()"><i class="fa-solid fa-rotate-right"></i> Reiniciar</button>
+                <button class="btn btn-danger" onclick="stopServer()"><i class="fa-solid fa-power-off"></i> Apagar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verificación de sesión real estricta
+        window.onload = function() {
+            const session = JSON.parse(localStorage.getItem('solari_session'));
+            if(!session) {
+                alert('Acceso denegado. Debes iniciar sesión con credenciales reales.');
+                window.location.href = 'auth.html?mode=login';
+                return;
+            }
+            document.getElementById('displayUsername').innerText = session.username;
+
+            // Revisar si viene de crear servidor con RAM personalizada
+            const urlParams = new URLSearchParams(window.location.search);
+            const ram = urlParams.get('ram');
+            if(ram) {
+                document.getElementById('statRam').innerText = ram + " GB";
+                document.getElementById('serverName').innerText = "Solari Custom VPS (" + ram + " GB)";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('solari_session');
+            window.location.href = 'auth.html?mode=login';
+        }
+
+        function restartServer() {
+            const consoleBox = document.getElementById('consoleOutput');
+            consoleBox.innerHTML += "<br>[Solari Core] Restarting server instance...";
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        function stopServer() {
+            const consoleBox = document.getElementById('consoleOutput');
+            consoleBox.innerHTML += "<br>[Solari Core] Server stopped by user.";
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>

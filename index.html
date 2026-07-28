@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solari Host | Cloud & Minecraft Infrastructure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #08080a;
+            --bg-secondary: #121216;
+            --bg-card: rgba(20, 20, 26, 0.75);
+            --border-color: rgba(255, 204, 0, 0.12);
+            --accent-yellow: #ffcc00;
+            --accent-yellow-glow: rgba(255, 204, 0, 0.25);
+            --text-main: #f3f3f6;
+            --text-muted: #9494a0;
+            --font-sans: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-primary); color: var(--text-main); font-family: var(--font-sans); overflow-x: hidden; line-height: 1.6; }
+
+        .bg-glows { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
+        .glow-circle { position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.12; background: var(--accent-yellow); width: 45vw; height: 45vw; top: -10%; left: 30%; }
+
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(8, 8, 10, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 18px 40px; }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.5rem; color: var(--text-main); text-decoration: none; }
+        .logo i { color: var(--accent-yellow); font-size: 1.8rem; filter: drop-shadow(0 0 10px var(--accent-yellow-glow)); }
+        .logo span { background: linear-gradient(135deg, #fff, var(--accent-yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .nav-links { display: flex; gap: 30px; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: var(--transition); }
+        .nav-links a:hover { color: var(--accent-yellow); }
+
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+        .btn { padding: 10px 22px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border: none; }
+        .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border-color); }
+        .btn-outline:hover { border-color: var(--accent-yellow); color: var(--accent-yellow); background: rgba(255, 204, 0, 0.05); }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-yellow), #e6b800); color: #000; font-weight: 700; box-shadow: 0 4px 20px var(--accent-yellow-glow); }
+        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        .hero { padding: 180px 40px 100px; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 204, 0, 0.08); border: 1px solid rgba(255, 204, 0, 0.3); padding: 6px 14px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; color: var(--accent-yellow); margin-bottom: 25px; }
+        .hero-title { font-size: 3.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1.5px; }
+        .hero-title span { color: var(--accent-yellow); text-shadow: 0 0 30px var(--accent-yellow-glow); }
+        .hero-desc { color: var(--text-muted); font-size: 1.15rem; margin-bottom: 40px; max-width: 600px; }
+        
+        .pricing-section { padding: 100px 40px; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-tag { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-yellow); margin-bottom: 10px; display: block; }
+        .section-title { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; }
+        
+        .pricing-calculator { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 40px; margin-bottom: 50px; backdrop-filter: blur(10px); }
+        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px; }
+        .ram-display { font-family: var(--font-mono); font-size: 2rem; font-weight: 800; color: var(--accent-yellow); background: rgba(255, 204, 0, 0.1); padding: 10px 25px; border-radius: 12px; border: 1px solid rgba(255, 204, 0, 0.3); }
+        input[type="range"] { width: 100%; height: 8px; background: #23222d; border-radius: 5px; outline: none; -webkit-appearance: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: var(--accent-yellow); cursor: pointer; box-shadow: 0 0 15px var(--accent-yellow-glow); }
+        
+        .calc-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 25px; border-top: 1px solid var(--border-color); flex-wrap: wrap; gap: 20px; }
+        .calc-price { font-size: 2.5rem; font-weight: 900; font-family: var(--font-mono); color: var(--accent-yellow); }
+        .calc-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+
+        footer { background: var(--bg-secondary); border-top: 1px solid var(--border-color); padding: 60px 40px 30px; text-align: center; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div class="bg-glows"><div class="glow-circle"></div></div>
+
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-cube"></i>
+                <span>Solari Host</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="#plans">Planes</a></li>
+                <li><a href="dashboard.html">Mi Panel</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="auth.html?mode=login" class="btn btn-outline">Iniciar Sesión</a>
+                <a href="auth.html?mode=register" class="btn btn-primary">Registrarse</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div>
+            <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Infraestructura Cloud de Alto Rendimiento</div>
+            <h1 class="hero-title">Hosting de Minecraft & VPS con Potencia <span>Dorada</span></h1>
+            <p class="hero-desc">Despliegue instantáneo, protección DDoS enterprise, discos NVMe SSD y rendimiento ultra optimizado para comunidades exigentes.</p>
+            <div style="display: flex; gap: 15px;">
+                <a href="#plans" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Ver Planes</a>
+                <a href="auth.html?mode=register" class="btn btn-outline"><i class="fa-solid fa-user-plus"></i> Crear Cuenta Real</a>
+            </div>
+        </div>
+        <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); padding: 30px; border-radius: 16px; font-family: var(--font-mono); font-size: 0.9rem;">
+            <p style="color: var(--accent-yellow); margin-bottom: 10px;"># Solari Node Status - US East</p>
+            <p>Node Core: <strong>Online (99.99% Uptime)</strong></p>
+            <p>DDoS Mitigation: <span style="color: #27c93f;">Active (Layer 7)</span></p>
+            <p>Average Ping: <strong>&lt; 12ms</strong></p>
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
+            <p style="color: var(--text-muted);">Sistema de autenticación y panel de control totalmente seguros con cifrado de contraseñas activo.</p>
+        </div>
+    </section>
+
+    <section id="plans" class="pricing-section">
+        <div class="section-header">
+            <span class="section-tag">Calculadora de Servidores</span>
+            <h2 class="section-title">Elige la Memoria RAM Ideal</h2>
+        </div>
+
+        <div class="pricing-calculator">
+            <div class="calc-header">
+                <div>
+                    <h3>Configurador Dinámico de Servidor</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Desliza para calcular recursos exactos para tu servidor.</p>
+                </div>
+                <div class="ram-display" id="ramDisplay">8 GB RAM</div>
+            </div>
+            <input type="range" id="ramSlider" min="1" max="32" value="8" step="1" oninput="updateCalculator(this.value)">
+            <div class="calc-footer">
+                <div class="calc-price" id="calcPrice">$12.00 <span>/ mes</span></div>
+                <button class="btn btn-primary" onclick="deployWithRam()">Desplegar en Mi Panel</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Solari Host & Infrastructure. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function updateCalculator(val) {
+            document.getElementById('ramDisplay').innerText = val + " GB RAM";
+            const price = (2 + (val * 1.25)).toFixed(2);
+            document.getElementById('calcPrice').innerHTML = `$${price} <span>/ mes</span>`;
+        }
+        function deployWithRam() {
+            const ram = document.getElementById('ramSlider').value;
+            window.location.href = `dashboard.html?action=create&ram=${ram}`;
+        }
+    </script>
+</body>
+</html>
