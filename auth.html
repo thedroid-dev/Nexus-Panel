@@ -3,187 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solari Host | Autenticación Segura</title>
+    <title>Solari Host | Acceso al Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #08080a;
-            --bg-secondary: #121216;
+            --bg-base: #060608;
+            --bg-panel: #0d0d12;
             --border-color: rgba(255, 204, 0, 0.15);
             --accent-yellow: #ffcc00;
-            --accent-yellow-glow: rgba(255, 204, 0, 0.25);
+            --accent-yellow-glow: rgba(255, 204, 0, 0.2);
             --text-main: #f3f3f6;
-            --text-muted: #9494a0;
+            --text-muted: #8c8c9e;
             --font-sans: 'Outfit', sans-serif;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-primary); color: var(--text-main); font-family: var(--font-sans); display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        
-        .auth-card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 20px; padding: 40px; width: 100%; max-width: 440px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-        .auth-logo { display: flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin-bottom: 25px; text-decoration: none; justify-content: center; }
-        .auth-logo i { color: var(--accent-yellow); }
-        
-        .tabs { display: flex; gap: 10px; margin-bottom: 25px; background: var(--bg-primary); padding: 5px; border-radius: 10px; border: 1px solid var(--border-color); }
-        .tab { flex: 1; background: transparent; border: none; padding: 10px; color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 8px; transition: 0.3s; }
-        .tab.active { background: var(--bg-secondary); color: var(--accent-yellow); box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        
+        body { background-color: var(--bg-base); color: var(--text-main); font-family: var(--font-sans); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
+        .auth-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .auth-logo { text-align: center; margin-bottom: 25px; }
+        .auth-logo i { font-size: 2.5rem; color: var(--accent-yellow); margin-bottom: 10px; display: block; }
+        .auth-logo h1 { font-size: 1.5rem; font-weight: 800; }
+
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
-        .form-control { width: 100%; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 16px; color: var(--text-main); font-size: 0.95rem; outline: none; }
-        .form-control:focus { border-color: var(--accent-yellow); box-shadow: 0 0 10px var(--accent-yellow-glow); }
-        
-        .btn-submit { width: 100%; background: linear-gradient(135deg, var(--accent-yellow), #e6b800); color: #000; font-weight: 700; padding: 12px; border: none; border-radius: 10px; cursor: pointer; font-size: 1rem; transition: 0.3s; box-shadow: 0 4px 20px var(--accent-yellow-glow); }
-        .btn-submit:hover { filter: brightness(1.1); }
-        
-        .alert { padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; display: none; }
-        .alert-error { background: rgba(255, 42, 77, 0.1); border: 1px solid #ff2a4d; color: #ff2a4d; }
-        .alert-success { background: rgba(39, 201, 63, 0.1); border: 1px solid #27c93f; color: #27c93f; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+        .form-control { width: 100%; background: var(--bg-base); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 16px; color: var(--text-main); font-size: 0.95rem; outline: none; }
+        .form-control:focus { border-color: var(--accent-yellow); box-shadow: 0 0 12px var(--accent-yellow-glow); }
+
+        .btn-auth { width: 100%; background: linear-gradient(135deg, var(--accent-yellow), #e6b800); color: #000; font-weight: 700; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 20px var(--accent-yellow-glow); transition: 0.3s; }
+        .btn-auth:hover { filter: brightness(1.1); }
+
+        .error-msg { background: rgba(255,42,77,0.15); border: 1px solid #ff2a4d; color: #ff2a4d; padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 15px; display: none; font-weight: 600; text-align: center; }
     </style>
 </head>
 <body>
 
     <div class="auth-card">
-        <a href="index.html" class="auth-logo">
+        <div class="auth-logo">
             <i class="fa-solid fa-cube"></i>
-            <span>Solari Host</span>
-        </a>
-
-        <div class="tabs">
-            <button class="tab active" id="tabLogin" onclick="switchMode('login')">Iniciar Sesión</button>
-            <button class="tab" id="tabRegister" onclick="switchMode('register')">Registrarse</button>
+            <h1>Solari Host</h1>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">Inicia sesión o regístrate para continuar</p>
         </div>
 
-        <div id="alertBox" class="alert"></div>
+        <div id="authError" class="error-msg">Por favor, rellena todos los campos.</div>
 
-        <!-- Formulario Login -->
-        <form id="formLogin" onsubmit="handleLogin(event)">
+        <form onsubmit="handleAuth(event)">
             <div class="form-group">
-                <label>Correo Electrónico</label>
-                <input type="email" id="loginEmail" class="form-control" placeholder="tu@correo.com" required>
+                <label>Nombre de Usuario o Email</label>
+                <input type="text" id="username" class="form-control" placeholder="Ej. 71x7" required>
             </div>
             <div class="form-group">
-                <label>Contraseña Obligatoria</label>
-                <input type="password" id="loginPass" class="form-control" placeholder="••••••••" required>
+                <label>Contraseña</label>
+                <input type="password" id="password" class="form-control" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="btn-submit">Acceder al Panel</button>
-        </form>
-
-        <!-- Formulario Registro -->
-        <form id="formRegister" onsubmit="handleRegister(event)" style="display: none;">
-            <div class="form-group">
-                <label>Nombre de Usuario Único</label>
-                <input type="text" id="regUser" class="form-control" placeholder="Ej. 71x7" required>
-            </div>
-            <div class="form-group">
-                <label>Correo Electrónico Único</label>
-                <input type="email" id="regEmail" class="form-control" placeholder="tu@correo.com" required>
-            </div>
-            <div class="form-group">
-                <label>Contraseña (Cifrado Seguro)</label>
-                <input type="password" id="regPass" class="form-control" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="btn-submit">Crear Cuenta Real</button>
+            <button type="submit" class="btn-auth"><i class="fa-solid fa-right-to-bracket"></i> Acceder al Panel</button>
         </form>
     </div>
 
     <script>
-        // Cargar modo inicial según URL o tab
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if(urlParams.get('mode') === 'register') {
-                switchMode('register');
-            }
-        }
-
-        function switchMode(mode) {
-            if(mode === 'login') {
-                document.getElementById('tabLogin').classList.add('active');
-                document.getElementById('tabRegister').classList.remove('active');
-                document.getElementById('formLogin').style.display = 'block';
-                document.getElementById('formRegister').style.display = 'none';
-            } else {
-                document.getElementById('tabRegister').classList.add('active');
-                document.getElementById('tabLogin').classList.remove('active');
-                document.getElementById('formRegister').style.display = 'block';
-                document.getElementById('formLogin').style.display = 'none';
-            }
-            hideAlert();
-        }
-
-        function showAlert(msg, type) {
-            const box = document.getElementById('alertBox');
-            box.innerText = msg;
-            box.className = `alert alert-${type}`;
-            box.style.display = 'block';
-        }
-
-        function hideAlert() {
-            document.getElementById('alertBox').style.display = 'none';
-        }
-
-        // Simulación de Bcrypt y Base de datos local segura
-        function hashPassword(pass) {
-            return "$2y$10$" + btoa(pass).substring(0, 22) + "securehash";
-        }
-
-        function handleRegister(e) {
+        function handleAuth(e) {
             e.preventDefault();
-            const username = document.getElementById('regUser').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const password = document.getElementById('regPass').value;
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
 
-            let users = JSON.parse(localStorage.getItem('solari_users') || '[]');
-
-            // Validar si ya existe usuario o email
-            if(users.some(u => u.username === username)) {
-                showAlert('El nombre de usuario ya está registrado.', 'error');
-                return;
-            }
-            if(users.some(u => u.email === email)) {
-                showAlert('El correo electrónico ya está registrado.', 'error');
+            if(!user || !pass) {
+                document.getElementById('authError').style.display = 'block';
                 return;
             }
 
-            // Guardar usuario con contraseña cifrada simulada
-            const newUser = {
-                username,
-                email,
-                passwordHash: hashPassword(password),
-                createdAt: new Date().toISOString()
+            // Guardar estado de sesión activa
+            const sessionData = {
+                username: user,
+                loggedInAt: new Date().toISOString()
             };
+            localStorage.setItem('solari_active_session', JSON.stringify(sessionData));
 
-            users.push(newUser);
-            localStorage.setItem('solari_users', JSON.stringify(users));
-            
-            showAlert('¡Registro exitoso! Redirigindo al login...', 'success');
-            setTimeout(() => switchMode('login'), 1500);
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPass').value;
-
-            let users = JSON.parse(localStorage.getItem('solari_users') || '[]');
-            const user = users.find(u => u.email === email);
-
-            if(!user || user.passwordHash !== hashPassword(password)) {
-                showAlert('Credenciales incorrectas o usuario no encontrado.', 'error');
-                return;
-            }
-
-            // Iniciar sesión real guardando token de sesión
-            localStorage.setItem('solari_session', JSON.stringify({
-                username: user.username,
-                email: user.email,
-                loginTime: new Date().toISOString()
-            }));
-
-            showAlert('¡Acceso concedido! Entrando al panel...', 'success');
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1000);
+            // Redirigir al panel de creación o consola directamente
+            window.location.href = 'panel.html';
         }
     </script>
 </body>
