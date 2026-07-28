@@ -175,6 +175,14 @@
     </div>
 
     <script>
+        (function checkAuth() {
+    const session = localStorage.getItem('solari_active_session');
+    if (!session) {
+        // Si no hay sesión iniciada, expulsar al usuario al login inmediatamente
+        window.location.href = 'auth.html';
+    }
+})();
+        
         // Cargar parámetros de URL del plan seleccionado
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
