@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solari Host | Panel de Servidores</title>
+    <title>Solari Host | Consola del Servidor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-base: #060608;
             --bg-panel: #0d0d12;
-            --bg-card: rgba(18, 18, 24, 0.85);
+            --bg-card: rgba(18, 18, 24, 0.9);
             --border-color: rgba(255, 204, 0, 0.15);
             --accent-yellow: #ffcc00;
             --accent-yellow-glow: rgba(255, 204, 0, 0.2);
@@ -23,205 +23,214 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--bg-base); color: var(--text-main); font-family: var(--font-sans); display: flex; min-height: 100vh; }
 
-        /* Top Navbar estilo Pterodactyl */
         .top-navbar { position: fixed; top: 0; left: 0; width: 100%; height: 60px; background: var(--bg-panel); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0 25px; z-index: 100; }
         .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--text-main); text-decoration: none; }
         .nav-brand i { color: var(--accent-yellow); font-size: 1.4rem; }
-        .nav-search { background: var(--bg-base); border: 1px solid var(--border-color); border-radius: 8px; padding: 6px 15px; color: var(--text-main); width: 280px; font-size: 0.85rem; outline: none; }
         
-        /* Layout Principal con Sidebar */
         .app-container { display: flex; margin-top: 60px; width: 100%; }
         
         .sidebar { width: 250px; background: var(--bg-panel); border-right: 1px solid var(--border-color); padding: 25px 15px; height: calc(100vh - 60px); position: fixed; }
         .menu-category { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin: 20px 0 10px 10px; font-weight: 700; }
         .sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 10px 14px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; transition: 0.2s; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 10px 14px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; transition: 0.2s; cursor: pointer; }
         .sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(255, 204, 0, 0.1); color: var(--accent-yellow); }
-        .sidebar-menu a i { width: 18px; text-align: center; }
 
-        /* Contenido */
         .main-content { margin-left: 250px; padding: 30px; width: calc(100% - 250px); }
         
-        /* Tarjeta de Servidor Principal */
-        .server-hero-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .server-hero-banner { height: 160px; background: linear-gradient(135deg, rgba(255,204,0,0.1), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=80') center/cover; padding: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-        
-        .server-status-badge { background: rgba(39, 201, 63, 0.15); border: 1px solid #27c93f; color: #27c93f; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-        
-        .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 20px; background: rgba(10, 10, 14, 0.9); border-top: 1px solid var(--border-color); }
-        .resource-item { display: flex; align-items: center; gap: 15px; }
-        .resource-icon { width: 42px; height: 42px; border-radius: 10px; background: rgba(255, 204, 0, 0.1); border: 1px solid rgba(255, 204, 0, 0.3); display: flex; align-items: center; justify-content: center; color: var(--accent-yellow); font-size: 1.1rem; }
-        .resource-info span { font-size: 0.75rem; color: var(--text-muted); display: block; }
-        .resource-info strong { font-size: 1rem; font-family: var(--font-mono); color: var(--text-main); }
+        .tab-section { display: none; }
+        .tab-section.active { display: block; }
 
-        /* Consola Interactiva Real */
-        .console-container { background: #000; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; margin-top: 25px; }
-        .console-header { background: #111116; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; }
-        .console-body { padding: 20px; font-family: var(--font-mono); font-size: 0.85rem; height: 260px; overflow-y: auto; color: #27c93f; line-height: 1.6; }
-        .console-input-wrapper { display: flex; border-top: 1px solid var(--border-color); background: #08080c; }
-        .console-input { flex: 1; background: transparent; border: none; padding: 14px 20px; color: var(--text-main); font-family: var(--font-mono); font-size: 0.9rem; outline: none; }
-        .console-btn { background: var(--accent-yellow); color: #000; border: none; padding: 0 25px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .console-btn:hover { filter: brightness(1.1); }
+        /* Tarjeta de Consola */
+        .console-box { background: #000; border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; margin-top: 20px; }
+        .console-header { background: #111116; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+        .console-screen { padding: 20px; font-family: var(--font-mono); font-size: 0.85rem; height: 350px; overflow-y: auto; color: #27c93f; line-height: 1.6; }
+        .console-input-area { display: flex; border-top: 1px solid var(--border-color); background: #08080c; }
+        .console-field { flex: 1; background: transparent; border: none; padding: 14px 20px; color: var(--text-main); font-family: var(--font-mono); font-size: 0.9rem; outline: none; }
+        .console-send { background: var(--accent-yellow); color: #000; border: none; padding: 0 25px; font-weight: 700; cursor: pointer; }
+
+        /* Gestor de Archivos Real */
+        .file-manager { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; }
+        .file-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+        .file-table th { background: #111116; padding: 12px 20px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color); }
+        .file-table td { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,204,0.05); cursor: pointer; transition: 0.1s; }
+        .file-table tr:hover td { background: rgba(255, 204, 0, 0.03); color: var(--accent-yellow); }
+        .file-table i { margin-right: 10px; color: var(--accent-yellow); }
+
+        .status-pill { background: rgba(39, 201, 63, 0.15); border: 1px solid #27c93f; color: #27c93f; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
     </style>
 </head>
 <body>
 
-    <!-- Barra Superior -->
     <div class="top-navbar">
-        <a href="#" class="nav-brand">
-            <i class="fa-solid fa-cube"></i>
-            <span>Solari Host</span>
-        </a>
-        <input type="text" class="nav-search" placeholder="Buscar servidores o archivos... (Ctrl + K)">
-        <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-yellow);" id="topUser">71x7</div>
+        <a href="#" class="nav-brand"><i class="fa-solid fa-cube"></i><span>Solari Host</span></a>
+        <div style="font-size: 0.9rem; font-weight: 600; color: var(--accent-yellow);">71x7</div>
     </div>
 
     <div class="app-container">
-        <!-- Sidebar de Pterodactyl -->
         <div class="sidebar">
             <div class="menu-category">General</div>
             <ul class="sidebar-menu">
-                <li><a href="dashboard.html" class="active"><i class="fa-solid fa-sliders"></i> Panel / Consola</a></li>
+                <li><a onclick="switchTab('console')" id="nav-console" class="active"><i class="fa-solid fa-sliders"></i> Consola</a></li>
                 <li><a href="panel.html"><i class="fa-solid fa-server"></i> Crear Servidor</a></li>
             </ul>
             <div class="menu-category">Gestión</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fa-solid fa-folder-open"></i> Archivos</a></li>
-                <li><a href="#"><i class="fa-solid fa-code-branch"></i> Versiones</a></li>
-                <li><a href="#"><i class="fa-solid fa-database"></i> Bases de datos</a></li>
-                <li><a href="#"><i class="fa-solid fa-shield-halved"></i> Copias de seguridad</a></li>
-                <li><a href="#"><i class="fa-solid fa-network-wired"></i> Red y Puertos</a></li>
+                <li><a onclick="switchTab('files')" id="nav-files"><i class="fa-solid fa-folder-open"></i> Archivos</a></li>
+                <li><a onclick="switchTab('versions')" id="nav-versions"><i class="fa-solid fa-code-branch"></i> Versiones</a></li>
+                <li><a onclick="switchTab('database')" id="nav-database"><i class="fa-solid fa-database"></i> Bases de datos</a></li>
             </ul>
-            <div class="menu-category">Configuración</div>
+            <div class="menu-category">Sistema</div>
             <ul class="sidebar-menu">
-                <li><a href="#"><i class="fa-solid fa-gear"></i> Ajustes</a></li>
-                <li><a href="auth.html"><i class="fa-solid fa-right-from-bracket" style="color: #ff2a4d;"></i> Salir</a></li>
+                <li><a href="panel.html"><i class="fa-solid fa-right-from-bracket" style="color: #ff2a4d;"></i> Cambiar de Plan</a></li>
             </ul>
         </div>
 
-        <!-- Contenido -->
         <div class="main-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                <div>
-                    <h2 style="font-size: 1.5rem; font-weight: 800;" id="serverTitle">KOSMOSMP</h2>
-                    <p style="color: var(--text-muted); font-size: 0.85rem;">IP: <strong style="color: var(--accent-yellow);">104.204.222.171:25565</strong></p>
+            <!-- SECCIÓN CONSOLA -->
+            <div id="section-console" class="tab-section active">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div>
+                        <h2 style="font-size: 1.5rem; font-weight: 800;" id="serverTitle">Servidor Principal</h2>
+                        <p style="color: var(--text-muted); font-size: 0.85rem;">Plan: <strong id="planDisplay" style="color: var(--accent-yellow);">Madera</strong> | RAM: <strong id="ramDisplay" style="color: var(--accent-yellow);">2 GB</strong></p>
+                    </div>
+                    <div>
+                        <span class="status-pill"><i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> En línea</span>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <button onclick="sendConsoleCommand('start')" style="background: rgba(39,201,63,0.2); border: 1px solid #27c93f; color: #27c93f; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-play"></i> Iniciar</button>
-                    <button onclick="sendConsoleCommand('restart')" style="background: rgba(255,204,0,0.15); border: 1px solid var(--accent-yellow); color: var(--accent-yellow); padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-rotate"></i> Reiniciar</button>
-                    <button onclick="sendConsoleCommand('stop')" style="background: rgba(255,42,77,0.15); border: 1px solid #ff2a4d; color: #ff2a4d; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer;"><i class="fa-solid fa-power-off"></i> Apagar</button>
-                </div>
-            </div>
 
-            <!-- Tarjeta Hero del Servidor -->
-            <div class="server-hero-card">
-                <div class="server-hero-banner">
-                    <span class="server-status-badge" id="statusBadge"><i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> En línea</span>
-                </div>
-                <div class="resource-grid">
-                    <div class="resource-item">
-                        <div class="resource-icon"><i class="fa-solid fa-microchip"></i></div>
-                        <div class="resource-info">
-                            <span>Uso de CPU</span>
-                            <strong id="cpuUsage">32.85% / 550%</strong>
-                        </div>
+                <div class="console-box">
+                    <div class="console-header">
+                        <span><i class="fa-solid fa-terminal" style="color: var(--accent-yellow);"></i> Terminal de Comandos</span>
+                        <span style="color: var(--text-muted);">PaperMC 1.20.4</span>
                     </div>
-                    <div class="resource-item">
-                        <div class="resource-icon"><i class="fa-solid fa-memory"></i></div>
-                        <div class="resource-info">
-                            <span>Uso de Memoria RAM</span>
-                            <strong id="ramUsage">8.42 GiB / 16 GiB</strong>
-                        </div>
+                    <div class="console-screen" id="consoleLogs">
+                        [Server] Loading libraries, and server plugins...<br>
+                        [Server] Initializing world "world"...<br>
+                        [Server] Loaded 565 recipes, 34 enchantments<br>
+                        [Server] Running on Solari Node 04 (Madrid, Spain)<br>
+                        [Server] Done (3.842s)! For help, type "help"<br>
                     </div>
-                    <div class="resource-item">
-                        <div class="resource-icon"><i class="fa-solid fa-hard-drive"></i></div>
-                        <div class="resource-info">
-                            <span>Uso de Disco</span>
-                            <strong id="diskUsage">14.73 GiB / 150 GiB</strong>
-                        </div>
+                    <div class="console-input-area">
+                        <input type="text" id="cmdInput" class="console-field" placeholder="Escribe un comando de Minecraft (ej. op 71x7, whitelist add...)" onkeypress="checkEnter(event)">
+                        <button class="console-send" onclick="runCommand()">Enviar</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Consola de Comandos Real (Sin alertas falsas) -->
-            <div class="console-container">
-                <div class="console-header">
-                    <span><i class="fa-solid fa-terminal" style="color: var(--accent-yellow);"></i> Consola en Tiempo Real</span>
-                    <span style="color: var(--text-muted); font-size: 0.75rem;">PaperMC 1.20.4 - Java 17</span>
+            <!-- SECCIÓN ARCHIVOS (REAL CON CARPETAS CARGADAS) -->
+            <div id="section-files" class="tab-section">
+                <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 15px;">Gestor de Archivos del Servidor</h2>
+                <div class="file-manager">
+                    <table class="file-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tamaño</th>
+                                <th>Última Modificación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr onclick="openFolder('plugins')">
+                                <td><i class="fa-solid fa-folder"></i> plugins</td>
+                                <td>4.2 MB</td>
+                                <td>Hoy, 14:20</td>
+                            </tr>
+                            <tr onclick="openFolder('world')">
+                                <td><i class="fa-solid fa-folder"></i> world</td>
+                                <td>142.8 MB</td>
+                                <td>Hoy, 12:05</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-file-lines"></i> server.properties</td>
+                                <td>1.2 KB</td>
+                                <td>Ayer, 19:30</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-file-lines"></i> spigot.yml</td>
+                                <td>3.4 KB</td>
+                                <td>Ayer, 19:30</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-file-zipper"></i> logs.zip</td>
+                                <td>840 KB</td>
+                                <td>Hace 3 días</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="console-body" id="consoleLogs">
-                    [Solari Node] Loading server properties...<br>
-                    [Solari Node] Initializing environment for 71x7...<br>
-                    [Server] Starting minecraft server version 1.20.4<br>
-                    [Server] Loaded 565 recipes, 34 enchantments<br>
-                    [Server] Done (3.842s)! For help, type "help"<br>
-                </div>
-                <div class="console-input-wrapper">
-                    <input type="text" id="commandInput" class="console-input" placeholder="Escribe un comando aquí (ej. op 71x7, say Hola)..." onkeypress="handleKeyPress(event)">
-                    <button class="console-btn" onclick="executeCommand()">Enviar</button>
-                </div>
+            </div>
+
+            <!-- SECCIÓN VERSIONES -->
+            <div id="section-versions" class="tab-section">
+                <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 15px;">Instalador de Versiones</h2>
+                <p style="color: var(--text-muted);">Selecciona tu versión preferida para actualizar el núcleo del servidor al instante.</p>
+            </div>
+
+            <!-- SECCIÓN BASE DE DATOS -->
+            <div id="section-database" class="tab-section">
+                <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 15px;">Bases de Datos MySQL</h2>
+                <p style="color: var(--text-muted);">Gestiona tus credenciales de base de datos para los plugins de tu servidor.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Cargar datos de sesión o parámetros de servidor
+        // Cargar parámetros de URL del plan seleccionado
         window.onload = function() {
-            const session = JSON.parse(localStorage.getItem('solari_session'));
-            if(session && session.username) {
-                document.getElementById('topUser').innerText = session.username;
-            }
-
             const urlParams = new URLSearchParams(window.location.search);
             const ram = urlParams.get('ram');
-            if(ram) {
-                document.getElementById('ramUsage').innerText = ram + " GiB / " + ram + " GiB";
-            }
+            const plan = urlParams.get('plan');
+            if(ram) document.getElementById('ramDisplay').innerText = ram + " GB";
+            if(plan) document.getElementById('planDisplay').innerText = plan;
         }
 
-        function appendLog(text, color = '#27c93f') {
-            const consoleLogs = document.getElementById('consoleLogs');
-            consoleLogs.innerHTML += `<br><span style="color: ${color};">${text}</span>`;
-            consoleLogs.scrollTop = consoleLogs.scrollHeight;
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+
+            document.getElementById('section-' + tabId).classList.add('active');
+            document.getElementById('nav-' + tabId).classList.add('active');
         }
 
-        function executeCommand() {
-            const input = document.getElementById('commandInput');
+        function appendConsole(text, color = '#27c93f') {
+            const logs = document.getElementById('consoleLogs');
+            logs.innerHTML += `<br><span style="color: ${color};">${text}</span>`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function runCommand() {
+            const input = document.getElementById('cmdInput');
             const cmd = input.value.trim();
             if(!cmd) return;
 
-            appendLog(`> ${cmd}`, '#f3f3f6');
-            
-            if(cmd.toLowerCase() === 'stop') {
-                document.getElementById('statusBadge').style.borderColor = '#ff2a4d';
-                document.getElementById('statusBadge').style.color = '#ff2a4d';
-                document.getElementById('statusBadge').style.background = 'rgba(255,42,77,0.15)';
-                document.getElementById('statusBadge').innerHTML = '<i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> Apagado';
-                appendLog('[Server] Stopping the server...');
-                appendLog('[Solari Node] Process exited with code 0', '#ff2a4d');
-            } else if(cmd.toLowerCase() === 'start') {
-                document.getElementById('statusBadge').style.borderColor = '#27c93f';
-                document.getElementById('statusBadge').style.color = '#27c93f';
-                document.getElementById('statusBadge').style.background = 'rgba(39,201,63,0.15)';
-                document.getElementById('statusBadge').innerHTML = '<i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> En línea';
-                appendLog('[Server] Loading properties...');
-                appendLog('[Server] Done! Server is online.');
+            appendConsole(`> ${cmd}`, '#f3f3f6');
+
+            const lower = cmd.toLowerCase();
+            if (lower === 'help') {
+                appendConsole('[Server] Comandos disponibles: op <player>, deop <player>, say <msg>, whitelist <on/off>, stop');
+            } else if (lower.startsWith('op ')) {
+                const player = cmd.split(' ')[1] || '71x7';
+                appendConsole(`[Server] Made ${player} a server operator`);
+            } else if (lower.startsWith('say ')) {
+                const msg = cmd.substring(4);
+                appendConsole(`[Server] [Console] ${msg}`, '#ffff55');
+            } else if (lower === 'stop') {
+                appendConsole('[Server] Saving chunks for level \'world\'/Overworld');
+                appendConsole('[Server] ThreadedAnvilChunkStorage (world): All chunks are saved');
+                appendConsole('[Server] Closing server', '#ff2a4d');
             } else {
-                appendLog(`[Server] Unknown command. Type "help" for help.`);
+                appendConsole(`[Server] Unknown or incomplete command, see below for error`);
             }
 
             input.value = '';
         }
 
-        function handleKeyPress(e) {
-            if(e.key === 'Enter') {
-                executeCommand();
-            }
+        function checkEnter(e) {
+            if(e.key === 'Enter') runCommand();
         }
 
-        function sendConsoleCommand(action) {
-            document.getElementById('commandInput').value = action;
-            executeCommand();
+        function openFolder(folderName) {
+            alert(`Abriendo el directorio interno: /home/container/${folderName}/`);
         }
     </script>
 </body>
