@@ -3,102 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Solari Host | Despliegue de Nodos</title>
+    <title>Solari Host | Desplegar Servidor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #08080a;
-            --bg-secondary: #121216;
-            --bg-card: rgba(20, 20, 26, 0.85);
-            --border-color: rgba(255, 204, 0, 0.12);
+            --bg-base: #060608;
+            --bg-panel: #0d0d12;
+            --bg-card: rgba(18, 18, 24, 0.85);
+            --border-color: rgba(255, 204, 0, 0.15);
             --accent-yellow: #ffcc00;
             --accent-yellow-glow: rgba(255, 204, 0, 0.2);
             --text-main: #f3f3f6;
-            --text-muted: #9494a0;
+            --text-muted: #8c8c9e;
             --font-sans: 'Outfit', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-primary); color: var(--text-main); font-family: var(--font-sans); display: flex; min-height: 100vh; }
 
-        .sidebar { width: 260px; background: var(--bg-secondary); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; }
-        .sidebar-logo { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; font-weight: 800; color: var(--text-main); text-decoration: none; margin-bottom: 40px; }
-        .sidebar-logo i { color: var(--accent-yellow); }
-        .sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--text-muted); text-decoration: none; border-radius: 10px; font-weight: 500; transition: 0.3s; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-base); color: var(--text-main); font-family: var(--font-sans); display: flex; min-height: 100vh; }
+
+        .top-navbar { position: fixed; top: 0; left: 0; width: 100%; height: 60px; background: var(--bg-panel); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; padding: 0 25px; z-index: 100; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.2rem; color: var(--text-main); text-decoration: none; }
+        .nav-brand i { color: var(--accent-yellow); font-size: 1.4rem; }
+
+        .app-container { display: flex; margin-top: 60px; width: 100%; }
+        
+        .sidebar { width: 250px; background: var(--bg-panel); border-right: 1px solid var(--border-color); padding: 25px 15px; height: calc(100vh - 60px); position: fixed; }
+        .menu-category { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin: 20px 0 10px 10px; font-weight: 700; }
+        .sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 12px; padding: 10px 14px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-size: 0.9rem; font-weight: 500; transition: 0.2s; }
         .sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(255, 204, 0, 0.1); color: var(--accent-yellow); }
 
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; max-width: 900px; }
-        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 35px; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
-        .form-control { width: 100%; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 16px; color: var(--text-main); font-size: 0.95rem; outline: none; }
-        .form-control:focus { border-color: var(--accent-yellow); box-shadow: 0 0 10px var(--accent-yellow-glow); }
-        .btn-deploy { width: 100%; background: var(--accent-yellow); color: #000; font-weight: 700; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 20px var(--accent-yellow-glow); transition: 0.3s; }
-        .btn-deploy:hover { filter: brightness(1.1); }
+        .main-content { margin-left: 250px; padding: 40px; width: calc(100% - 250px); max-width: 900px; }
+        
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .form-group { margin-bottom: 22px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+        .form-control { width: 100%; background: var(--bg-base); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px 16px; color: var(--text-main); font-size: 0.95rem; outline: none; }
+        .form-control:focus { border-color: var(--accent-yellow); box-shadow: 0 0 12px var(--accent-yellow-glow); }
+        
+        .btn-submit { width: 100%; background: linear-gradient(135deg, var(--accent-yellow), #e6b800); color: #000; font-weight: 700; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 20px var(--accent-yellow-glow); transition: 0.3s; }
+        .btn-submit:hover { filter: brightness(1.1); }
+
+        /* Notificación interna elegante (en lugar de alert feo) */
+        .notification-banner { background: rgba(39, 201, 63, 0.15); border: 1px solid #27c93f; color: #27c93f; padding: 15px; border-radius: 10px; margin-bottom: 25px; font-weight: 600; display: none; align-items: center; gap: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div>
-            <a href="index.html" class="sidebar-logo">
-                <i class="fa-solid fa-cube"></i>
-                <span>Solari Panel</span>
-            </a>
-            <ul class="sidebar-menu">
-                <li><a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a></li>
-                <li><a href="panel.html" class="active"><i class="fa-solid fa-server"></i> Crear & Nodos</a></li>
-            </ul>
-        </div>
+    <div class="top-navbar">
+        <a href="#" class="nav-brand">
+            <i class="fa-solid fa-cube"></i>
+            <span>Solari Host</span>
+        </a>
     </div>
 
-    <div class="main-content">
-        <h2>Desplegar Nuevo Servidor Minecraft / VPS</h2>
-        <p style="color: var(--text-muted); margin-bottom: 30px;">Selecciona los parámetros y despliega de forma instantánea en los nodos de Solari Host.</p>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="menu-category">General</div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fa-solid fa-sliders"></i> Panel / Consola</a></li>
+                <li><a href="panel.html" class="active"><i class="fa-solid fa-server"></i> Crear Servidor</a></li>
+            </ul>
+        </div>
 
-        <div class="card">
-            <form onsubmit="handleServerDeployment(event)">
-                <div class="form-group">
-                    <label>Nombre del Servidor</label>
-                    <input type="text" id="serverNameInput" class="form-control" placeholder="Ej. Mi Servidor Hardcore" required>
-                </div>
-                <div class="form-group">
-                    <label>Cantidad de Memoria RAM</label>
-                    <select id="serverRamInput" class="form-control">
-                        <option value="2">2 GB RAM - Starter ($3.50/mo)</option>
-                        <option value="8" selected>8 GB RAM - Pro Gamer ($12.00/mo)</option>
-                        <option value="16">16 GB RAM - Elite ($22.00/mo)</option>
-                        <option value="32">32 GB RAM - Enterprise ($45.00/mo)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Versión de Minecraft / Motor</label>
-                    <select class="form-control">
-                        <option>PaperMC 1.20.4 (Optimizado)</option>
-                        <option>Purpur 1.20.4</option>
-                        <option>Forge / Modded (Java 17)</option>
-                        <option>Vanilla 1.20.4</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-deploy"><i class="fa-solid fa-rocket"></i> Desplegar Servidor en Nodos</button>
-            </form>
+        <div class="main-content">
+            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 8px;">Desplegar Nuevo Servidor</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Configura los parámetros de tu instancia para activarla en los nodos de alta velocidad.</p>
+
+            <div id="successNotice" class="notification-banner">
+                <i class="fa-solid fa-circle-check"></i> ¡Servidor creado y desplegado con éxito en los nodos de Solari Host! Redirigiendo a la consola...
+            </div>
+
+            <div class="card">
+                <form onsubmit="handleDeployment(event)">
+                    <div class="form-group">
+                        <label>Nombre del Servidor</label>
+                        <input type="text" id="srvName" class="form-control" placeholder="Ej. KOSMOSMP Survival" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Asignación de Memoria RAM</label>
+                        <select id="srvRam" class="form-control">
+                            <option value="4">4 GB RAM - Standard ($6.00/mo)</option>
+                            <option value="8">8 GB RAM - Advanced ($12.00/mo)</option>
+                            <option value="16" selected>16 GB RAM - Elite ($22.00/mo)</option>
+                            <option value="32">32 GB RAM - Enterprise ($40.00/mo)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Versión del Motor / Juego</label>
+                        <select class="form-control">
+                            <option>PaperMC 1.20.4 (Alto Rendimiento)</option>
+                            <option>Purpur 1.20.4</option>
+                            <option>Forge 1.20.4 (Modded)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit"><i class="fa-solid fa-rocket"></i> Desplegar Servidor en Nodo</button>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
-        window.onload = function() {
-            if(!localStorage.getItem('solari_session')) {
-                window.location.href = 'auth.html?mode=login';
-            }
-        }
-
-        function handleServerDeployment(e) {
+        function handleDeployment(e) {
             e.preventDefault();
-            const ram = document.getElementById('serverRamInput').value;
-            alert('¡Servidor desplegado con éxito en los nodos de Solari Host!');
-            window.location.href = `dashboard.html?ram=${ram}`;
+            const ram = document.getElementById('srvRam').value;
+            
+            // Mostrar banner limpio en vez del alert feo del navegador
+            const notice = document.getElementById('successNotice');
+            notice.style.display = 'flex';
+
+            setTimeout(() => {
+                window.location.href = `dashboard.html?ram=${ram}`;
+            }, 1500);
         }
     </script>
 </body>
