@@ -148,6 +148,14 @@
     </div>
 
     <script>
+       (function checkAuth() {
+    const session = localStorage.getItem('solari_active_session');
+    if (!session) {
+        // Si no hay sesión iniciada, expulsar al usuario al login inmediatamente
+        window.location.href = 'auth.html';
+    }
+})();
+        
         function selectPlan(element, name, ram) {
             document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
